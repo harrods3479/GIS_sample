@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>GSI Tiles on Leaflet</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
+    <script>
+        window.onload = function()
+        {
+            
+        };
+        function mark(){
+            //マーカー追加
+            var marker = L.marker([35.905947, 138.233014])
+                .bindPopup("<h1>Hello! Leaflet!</h1>")
+                .addTo(map);
+        }
+    </script>
+
+    <style>
+    body {padding: 0; margin: 0}
+    html, body, #map {height: 100%; width: 100%;}
+    </style>
+</head>
+
+    <body>
+        <button type="button" class="btn btn-primary btn-lg btn-block" onclick="mark();">Primary</button>
+        <div id="map"></div>
+        <script>
+            var map = L.map('map');
+            L.tileLayer('https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png', {
+                attribution: "<a href='http://maps.gsi.go.jp/development/ichiran.html' target='_blank'>地理院タイル</a>"
+            }).addTo(map);
+            map.setView([35.905947, 138.233014], 15);
+
+            
+        </script>
+    </body>
+</html>

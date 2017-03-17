@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="http://portal.cyberjapan.jp/sys/OpenLayers-current/OpenLayers.js"></script>
+<script type="text/javascript">
+ 
+  // 座標系の設定
+  var projection3857 = new OpenLayers.Projection("EPSG:3857");
+  var projection4326 = new OpenLayers.Projection("EPSG:4326");
+  
+  var map = null;
+  
+  // -------------------------------------------------------------------------
+  //  マップの生成
+  //
+  //  fx             経度(例：富士山 138.731388) ※1 
+  //  fy             緯度(例：富士山 35.362222) 
+  //  izoom          表示倍率(用途にもよりますが10ぐらいが目安)
+  //  imaxZoomLevel  最大倍率(用途にもよりますが17ぐらいが目安)
+  //
+  //   ※1 googleマップや地理院地図の検索では「緯度,経度」の順番です。 
+  function init_map(fx,fy,izoom,imaxZoomLevel){
+    
+    // マップの生成
+    map = new OpenLayers.Map({
+      div: "map",
+      projection: projection3857,
+      displayProjection: projection4326,
+    });
+ 
+    // レイヤーの生成
+    map.addLayer(new OpenLayers.Layer.XYZ(
+         "標準地図",  // レイヤー名
+         "http://cyberjapandata.gsi.go.jp/xyz/std/${z}/${x}/${y}.png", // url
+          { 
+            // options(attribution:帰属,,minZoomLevel:最小倍率(未使用),maxZoomLevel:最大倍率)
+            attribution  : "<a href='http://www.gsi.go.jp/kikakuchousei/kikakuchousei40182.html' target='_blank'>国土地理院</a>", 
+            maxZoomLevel : imaxZoomLevel 
+          }
+          ));
+ 
+    // マップの中心を設定
+    map.setCenter(new OpenLayers.LonLat(
+                        fx, // X:経度
+                        fy  // Y:緯度
+                      ).transform(projection4326, projection3857),// 座標系 
+                      izoom // デフォルトズームレベル
+                      );
+  }
+  
+  // onloadイベント
+  window.onload = function() {
+    
+    // マップの生成(経度、緯度、倍率、最大倍率)
+    // init_map(138.731388,35.362222,10,18);
+    // 森のオフィス周辺
+    init_map(138.233014,35.905947,15,18);
+    
+  }
+     
+</script>
+<style type="text/css">
+ 
+  /* 国土地理院の出典表示用 */
+  body {padding: 0; margin: 0}
+  div.olControlAttribution {
+    padding: 3px;
+    color:#000000;
+    background-color:#ffffff;
+    background-color:rgba(230,255,255,0.7);
+    font-size:12px;
+    line-height:14px;
+    bottom:5px;
+    vertical-align: middle;
+  }
+</style>
+</head>
+<body>
+ 
+<!-- マップの表示エリア -->
+<div id="map" style="height: 500px; width: 100%;"></div>
+ 
+</body>
+</html>
+ 
+
